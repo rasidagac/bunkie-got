@@ -1,0 +1,51 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Home {
+  id              Int             @id @default(autoincrement())
+  name            String
+  resetDayOfMonth Int
+  code            String          @unique
+  createdAt       DateTime        @default(now())
+  expenses        Expense[]
+  householdItems  HouseholdItem[]
+  users           User[]
+}
+
+model User {
+  id        String    @id
+  name      String
+  email     String?   @unique
+  homeId    Int?
+  createdAt DateTime  @default(now())
+  expenses  Expense[]
+  home      Home?     @relation(fields: [homeId], references: [id])
+}
+
+model Expense {
+  id        Int      @id @default(autoincrement())
+  name      String
+  amount    Float
+  date      DateTime
+  homeId    Int
+  userId    String
+  createdAt DateTime @default(now())
+  home      Home     @relation(fields: [homeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model HouseholdItem {
+  id        Int      @id @default(autoincrement())
+  name      String
+  homeId    Int
+  createdAt DateTime @default(now())
+  home      Home     @relation(fields: [homeId], references: [id])
+}
