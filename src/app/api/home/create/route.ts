@@ -13,9 +13,13 @@ export async function POST(request: NextRequest) {
       users: {
         connectOrCreate: [
           {
-            create: { email: user?.email, id: user?.sub, name: user?.name },
+            create: {
+              email: user?.emailAddresses[0].emailAddress,
+              id: user?.id,
+              name: user?.username,
+            },
             where: {
-              id: user?.sub, // Auth0 user id as primary key
+              id: user?.id, // Clerk user id as primary key
             },
           },
         ],

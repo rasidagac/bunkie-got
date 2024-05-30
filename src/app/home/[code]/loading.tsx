@@ -1,5 +1,5 @@
-import { Skeleton } from 'antd';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Loading() {
-  return <Skeleton active />;
+  return <Skeleton />;
 }

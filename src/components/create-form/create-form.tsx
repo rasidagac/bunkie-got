@@ -1,101 +1,152 @@
 'use client';
 
-import { InfoCircleOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Form, FormProps, Input, Select, Typography } from 'antd';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Info, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { generateUsername } from 'unique-username-generator';
+import { z } from 'zod';
 
-const { Title } = Typography;
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
-interface FieldType {
-  name: string;
-  resetDate: string;
-}
+const formSchema = z.object({
+  code: z.string().regex(/^(?=.{6,16}$)(?!.*_{2})[a-zA-Z0-9_]+$/, {
+    message:
+      'Your home code can only contain alphanumeric characters and underscores and must be between 6 and 16 characters',
+  }),
+  name: z.string().min(3, {
+    message: 'Your home name must be at least 3 characters.',
+  }),
+  resetDayOfMonth: z.string(),
+});
 
-type onFinishType = FormProps<FieldType>['onFinish'];
-
-export default function CreateHome({ onFinish }: { onFinish: onFinishType }) {
-  const [form] = Form.useForm();
+export default function CreateHome({ onFinish }) {
   const [spin, setSpin] = useState<boolean>(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    defaultValues: { resetDayOfMonth: '1' },
+    resolver: zodResolver(formSchema),
+  });
 
   const handleRandomCode = () => {
     setSpin(true);
     setTimeout(() => {
-      form.setFieldValue('code', generateUsername('_', 2, 10));
-      form.validateFields(['code']);
+      form.setValue('code', generateUsername('_', 2, 10));
+      form.trigger('code');
       setSpin(false);
     }, 500);
   };
 
   return (
     <div className="mx-auto h-full max-w-xl content-center">
-      <Title level={3}>Create a new Home</Title>
-      <Form
-        initialValues={{ resetDayOfMonth: '1' }}
-        onFinish={onFinish}
-        size="large"
-        layout="vertical"
-        form={form}
-        validateMessages={{
-          pattern: {
-            mismatch:
-              '${label} can only contain alphanumeric characters and underscores and must be between 6 and 16 characters',
-          },
-        }}
-      >
-        <Form.Item
-          label="Your home name"
-          name="name"
-          rules={[{ required: true }]}
+      <h2>Create a new Home</h2>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onFinish)}
+          className="flex flex-col gap-5"
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Your home code"
-          name="code"
-          tooltip={{
-            icon: <InfoCircleOutlined />,
-            title: 'Your home code must be uniqe',
-          }}
-          rules={[
-            {
-              pattern: /^(?=.{6,16}$)(?!.*_{2})[a-zA-Z0-9_]+$/,
-              required: true,
-              type: 'string',
-            },
-          ]}
-        >
-          <Input
-            suffix={
-              <ReloadOutlined
-                onClick={spin ? () => null : handleRandomCode}
-                spin={spin}
-              />
-            }
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Your home name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Form.Item>
-        <Form.Item
-          label="Expense reset date"
-          name="resetDayOfMonth"
-          rules={[{ required: true }]}
-        >
-          <Select
-            options={[
-              { label: '1st day of month', value: '1' },
-              { label: '5th day of month', value: '5' },
-              { label: '10th day of month', value: '10' },
-              { label: '15th day of month', value: '15' },
-              { label: '20th day of month', value: '20' },
-              { label: '25th day of month', value: '25' },
-              { label: 'Last day of month', value: '31' },
-            ]}
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex items-center gap-1">
+                  Your home code
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info size={20} className="cursor-pointer" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Your home code must be unique</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input {...field} />
+                    <RefreshCw
+                      size={20}
+                      onClick={spin ? () => null : handleRandomCode}
+                      className={`absolute right-2 top-2.5 cursor-pointer ${spin ? 'animate-spin' : null}`}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
+          <FormField
+            control={form.control}
+            name="resetDayOfMonth"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Expense reset date</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value}
+                    name={field.name}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a fruit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="1">1st day of month</SelectItem>
+                        <SelectItem value="5">5th day of month</SelectItem>
+                        <SelectItem value="10">10th day of month</SelectItem>
+                        <SelectItem value="15">15th day of month</SelectItem>
+                        <SelectItem value="20">20th day of month</SelectItem>
+                        <SelectItem value="25">25th day of month</SelectItem>
+                        <SelectItem value="31">Last day of month</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
       </Form>
     </div>
   );

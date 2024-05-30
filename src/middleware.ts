@@ -1,3 +1,13 @@
-import { withMiddlewareAuthRequired } from '@auth0/nextjs-auth0/edge';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default withMiddlewareAuthRequired();
+const isProtectedRoute = createRouteMatcher(
+  (route) => !route.url.match(/\/sign-(in|up)/),
+);
+
+export default clerkMiddleware((auth, req) => {
+  if (isProtectedRoute(req)) auth().protect();
+});
+
+export const config = {
+  matcher: ['/((?!.+.[w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+};

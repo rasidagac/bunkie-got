@@ -1,16 +1,13 @@
-'use client';
-
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { useRouter } from 'next/navigation';
+import { currentUser } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 import { CreateHome } from '@/components/create-form';
 
 export default function Page() {
-  const router = useRouter();
-  const { user } = useUser();
-
   async function submitData(formData: any) {
-    console.log('formData:', formData);
+    'use server';
+
+    const user = await currentUser();
 
     const response = await fetch('/api/home/create', {
       body: JSON.stringify({ ...formData, user }),
@@ -22,7 +19,7 @@ export default function Page() {
 
     const home = await response.json();
 
-    router.push(`./${home.code}`);
+    redirect(`./${home.code}`);
   }
 
   return <CreateHome onFinish={submitData} />;

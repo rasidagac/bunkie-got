@@ -1,23 +1,20 @@
 'use client';
 
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { Button, Skeleton, Space, Typography } from 'antd';
+import { Button, Space, Typography } from 'antd';
 import Link from 'next/link';
 
 const { Title } = Typography;
 
 export default function Home() {
-  const { user, isLoading } = useUser();
-
   return (
     <div className="container mx-auto h-full content-center text-center">
       <Title level={2}>
         Hi
-        {isLoading ? (
+        {/* isLoading ? (
           <Skeleton.Input active className="align-middle" />
         ) : (
           ` ${user?.name}, `
-        )}
+        ) */}
         welcome to BunkieGot!
       </Title>
       <Space size="large">

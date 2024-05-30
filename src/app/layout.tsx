@@ -1,12 +1,10 @@
 import './globals.css';
 
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { ClerkProvider, UserButton } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+import Link from 'next/link';
 import React from 'react';
-
-import Wrapper from '@/app/wrapper';
-import Layout from '@/components/layout';
 
 const poppins = Poppins({
   subsets: ['latin-ext'],
@@ -27,16 +25,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <UserProvider>
+      <ClerkProvider>
         <body className={poppins.className}>
-          <Wrapper>
-            <Layout>
+          <div className="flex h-lvh flex-col justify-between">
+            <header className="border-b bg-background px-12 py-6">
+              <div className="flex w-full items-center justify-between">
+                <Link href="/">BunkieGot</Link>
+                <UserButton showName />
+              </div>
+            </header>
+            <main className="container mx-auto">
               {modal}
               {children}
-            </Layout>
-          </Wrapper>
+            </main>
+            <footer className="border-t bg-background px-12 py-6">
+              <div className="flex w-full items-center justify-between">
+                Footer
+              </div>
+            </footer>
+          </div>
         </body>
-      </UserProvider>
+      </ClerkProvider>
     </html>
   );
 }
