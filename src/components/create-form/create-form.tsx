@@ -62,7 +62,7 @@ export default function CreateHome({ onFinish }) {
 
   return (
     <div className="mx-auto h-full max-w-xl content-center">
-      <h2>Create a new Home</h2>
+      <h1 className="mb-4 font-bold">Create a new Home</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onFinish)}
