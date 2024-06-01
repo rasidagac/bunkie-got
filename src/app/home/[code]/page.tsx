@@ -24,20 +24,22 @@ export default async function Page({ params }: { params: { code: string } }) {
   }
 
   return (
-    <div className="container h-full p-0">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex gap-2">
-            <Home size={22} /> {home.name}
-          </CardTitle>
-          <div className="flex h-5 gap-2 text-sm text-muted-foreground ">
-            Code: {home.code}
-            <Separator orientation="vertical" />
-            {`Reset Day: ${getResetDate(home.resetDayOfMonth).toLocaleDateString()}`}
-          </div>
-        </CardHeader>
-      </Card>
-      <ExpenseTable />
+    <div className="container h-full px-0 py-6">
+      <div className="flex flex-col flex-wrap gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex gap-2">
+              <Home size={22} /> {home.name}
+            </CardTitle>
+            <div className="flex h-5 gap-2 text-sm text-muted-foreground ">
+              Code: {home.code}
+              <Separator orientation="vertical" />
+              {`Reset Day: ${getResetDate(home.resetDayOfMonth).toLocaleDateString()}`}
+            </div>
+          </CardHeader>
+        </Card>
+        <ExpenseTable />
+      </div>
     </div>
   );
 }

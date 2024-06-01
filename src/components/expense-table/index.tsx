@@ -26,18 +26,18 @@ export default function ExpenseTable() {
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="[&>div:first-child]:h-[300px]">
         <Table>
-          <TableHeader>
+          <TableHeader className="sticky top-0 bg-white">
             <TableRow>
               <TableHead>Customer</TableHead>
-              <TableHead className="hidden xl:table-column">Type</TableHead>
-              <TableHead className="hidden xl:table-column">Status</TableHead>
-              <TableHead className="hidden xl:table-column">Date</TableHead>
+              <TableHead className="hidden xl:table-cell">Type</TableHead>
+              <TableHead className="hidden xl:table-cell">Status</TableHead>
+              <TableHead className="hidden xl:table-cell">Date</TableHead>
               <TableHead className="text-right">Amount</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="table-caption h-[200px] overflow-auto">
+          <TableBody className="h-[200px] overflow-auto">
             <TableRow>
               <TableCell>
                 <div className="font-medium">Liam Johnson</div>
@@ -45,13 +45,13 @@ export default function ExpenseTable() {
                   liam@example.com
                 </div>
               </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
+              <TableCell className="hidden xl:table-cell">Sale</TableCell>
+              <TableCell className="hidden xl:table-cell">
                 <Badge className="text-xs" variant="outline">
                   Approved
                 </Badge>
               </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+              <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
                 2023-06-23
               </TableCell>
               <TableCell className="text-right">$250.00</TableCell>
@@ -63,13 +63,13 @@ export default function ExpenseTable() {
                   olivia@example.com
                 </div>
               </TableCell>
-              <TableCell className="hidden xl:table-column">Refund</TableCell>
-              <TableCell className="hidden xl:table-column">
+              <TableCell className="hidden xl:table-cell">Refund</TableCell>
+              <TableCell className="hidden xl:table-cell">
                 <Badge className="text-xs" variant="outline">
                   Declined
                 </Badge>
               </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+              <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
                 2023-06-24
               </TableCell>
               <TableCell className="text-right">$150.00</TableCell>
@@ -81,15 +81,15 @@ export default function ExpenseTable() {
                   noah@example.com
                 </div>
               </TableCell>
-              <TableCell className="hidden xl:table-column">
+              <TableCell className="hidden xl:table-cell">
                 Subscription
               </TableCell>
-              <TableCell className="hidden xl:table-column">
+              <TableCell className="hidden xl:table-cell">
                 <Badge className="text-xs" variant="outline">
                   Approved
                 </Badge>
               </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+              <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
                 2023-06-25
               </TableCell>
               <TableCell className="text-right">$350.00</TableCell>
@@ -101,13 +101,13 @@ export default function ExpenseTable() {
                   emma@example.com
                 </div>
               </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
+              <TableCell className="hidden xl:table-cell">Sale</TableCell>
+              <TableCell className="hidden xl:table-cell">
                 <Badge className="text-xs" variant="outline">
                   Approved
                 </Badge>
               </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+              <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
                 2023-06-26
               </TableCell>
               <TableCell className="text-right">$450.00</TableCell>
@@ -119,13 +119,13 @@ export default function ExpenseTable() {
                   liam@example.com
                 </div>
               </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
+              <TableCell className="hidden xl:table-cell">Sale</TableCell>
+              <TableCell className="hidden xl:table-cell">
                 <Badge className="text-xs" variant="outline">
                   Approved
                 </Badge>
               </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+              <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
                 2023-06-27
               </TableCell>
               <TableCell className="text-right">$550.00</TableCell>
