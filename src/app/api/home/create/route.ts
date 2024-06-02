@@ -1,9 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const { name, resetDayOfMonth, user, code } = await request.json();
+  const { code, name, resetDayOfMonth, user } = await request.json();
 
   const home = await prisma.home.create({
     data: {

@@ -19,10 +19,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
+  drawer,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
+  drawer: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -36,7 +36,7 @@ export default function RootLayout({
               </div>
             </header>
             <main className="container mx-auto">
-              {modal}
+              {drawer}
               {children}
             </main>
             <footer className="border-t bg-background px-12 py-6">
