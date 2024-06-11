@@ -1,10 +1,10 @@
-import prisma from '../src/lib/prisma';
+import prisma from "../src/lib/prisma";
 
 async function main() {
   const response = prisma.home.create({
     data: {
-      name: 'Cebeci Home',
-      resetDayOfMonth: 1,
+      code: "noxx672",
+      name: "Cebeci Home",
     },
   });
   console.log(response);

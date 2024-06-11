@@ -28,14 +28,14 @@ export default function RootLayout({
     <html lang="en">
       <ClerkProvider>
         <body className={poppins.className}>
-          <div className="flex h-lvh flex-col justify-between">
+          <div className="flex min-h-lvh flex-col justify-between">
             <header className="border-b bg-background px-12 py-6">
               <div className="flex w-full items-center justify-between">
                 <Link href="/">BunkieGot</Link>
-                <UserButton showName />
+                <UserButton afterSignOutUrl="/sign-in" showName />
               </div>
             </header>
-            <main className="container mx-auto">
+            <main className="container mx-auto h-full py-6">
               {drawer}
               {children}
             </main>

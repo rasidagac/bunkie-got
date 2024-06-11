@@ -1,6 +1,7 @@
-import { CreateHome } from "@/components/create-form";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+
+import { CreateHome } from "../../../components/create-home";
 
 export default function Page() {
   async function submitData(formData: any) {

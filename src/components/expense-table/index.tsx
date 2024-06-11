@@ -3,20 +3,45 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Expense } from "@prisma/client";
+import { Expense, User } from "@prisma/client";
 import React from "react";
 
 interface IProps {
-  data: ReadonlyArray<Expense>;
+  data: ReadonlyArray<{ user: Pick<User, "name"> } & Expense>;
 }
 
 export default function ExpenseTable({ data }: IProps) {
+  let total = 0;
+
+  const rowRendered = data.map((expense) => {
+    total += expense.amount;
+
+    return (
+      <TableRow key={expense.id}>
+        <TableCell>
+          <div className="font-medium">{expense.user.name}</div>
+        </TableCell>
+        <TableCell className="hidden xl:table-cell">Sale</TableCell>
+        <TableCell className="hidden xl:table-cell">
+          <Badge className="text-xs" variant="outline">
+            Approved
+          </Badge>
+        </TableCell>
+        <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
+          2023-06-23
+        </TableCell>
+        <TableCell className="text-right">{expense.amount}</TableCell>
+      </TableRow>
+    );
+  });
+
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
+    <div className="mx-auto flex w-full max-w-md flex-col overflow-auto rounded-t-[10px]">
       <Table>
         <TableHeader className="sticky top-0 bg-white">
           <TableRow>
@@ -27,80 +52,13 @@ export default function ExpenseTable({ data }: IProps) {
             <TableHead className="text-right">Amount</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody>{rowRendered}</TableBody>
+        <TableFooter>
           <TableRow>
-            <TableCell>
-              <div className="font-medium">Liam Johnson</div>
-              <div className="hidden text-sm text-muted-foreground md:inline">
-                liam@example.com
-              </div>
-            </TableCell>
-            <TableCell className="hidden xl:table-cell">Sale</TableCell>
-            <TableCell className="hidden xl:table-cell">
-              <Badge className="text-xs" variant="outline">
-                Approved
-              </Badge>
-            </TableCell>
-            <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
-              2023-06-23
-            </TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
+            <TableCell>Total</TableCell>
+            <TableCell className="text-right">{total}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell>
-              <div className="font-medium">Noah Williams</div>
-              <div className="hidden text-sm text-muted-foreground md:inline">
-                noah@example.com
-              </div>
-            </TableCell>
-            <TableCell className="hidden xl:table-cell">Subscription</TableCell>
-            <TableCell className="hidden xl:table-cell">
-              <Badge className="text-xs" variant="outline">
-                Approved
-              </Badge>
-            </TableCell>
-            <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
-              2023-06-25
-            </TableCell>
-            <TableCell className="text-right">$350.00</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <div className="font-medium">Emma Brown</div>
-              <div className="hidden text-sm text-muted-foreground md:inline">
-                emma@example.com
-              </div>
-            </TableCell>
-            <TableCell className="hidden xl:table-cell">Sale</TableCell>
-            <TableCell className="hidden xl:table-cell">
-              <Badge className="text-xs" variant="outline">
-                Approved
-              </Badge>
-            </TableCell>
-            <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
-              2023-06-26
-            </TableCell>
-            <TableCell className="text-right">$450.00</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <div className="font-medium">Liam Johnson</div>
-              <div className="hidden text-sm text-muted-foreground md:inline">
-                liam@example.com
-              </div>
-            </TableCell>
-            <TableCell className="hidden xl:table-cell">Sale</TableCell>
-            <TableCell className="hidden xl:table-cell">
-              <Badge className="text-xs" variant="outline">
-                Approved
-              </Badge>
-            </TableCell>
-            <TableCell className="hidden md:table-cell lg:hidden xl:table-cell">
-              2023-06-27
-            </TableCell>
-            <TableCell className="text-right">$550.00</TableCell>
-          </TableRow>
-        </TableBody>
+        </TableFooter>
       </Table>
     </div>
   );

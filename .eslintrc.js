@@ -4,6 +4,7 @@ module.exports = {
     "prettier",
     "plugin:prettier/recommended",
     "plugin:perfectionist/recommended-alphabetical",
+    "plugin:@next/next/recommended",
   ],
   plugins: ["perfectionist"],
   rules: {

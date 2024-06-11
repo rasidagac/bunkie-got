@@ -12,7 +12,6 @@ datasource db {
 model Home {
   id              Int             @id @default(autoincrement())
   name            String
-  resetDayOfMonth Int
   code            String          @unique
   createdAt       DateTime        @default(now())
   expenses        Expense[]
@@ -32,11 +31,12 @@ model User {
 
 model Expense {
   id        Int      @id @default(autoincrement())
-  name      String
   amount    Float
-  date      DateTime
+  date      DateTime?
   homeId    Int
   userId    String
+  items     HouseholdItem[]
+  imageUrl  String?
   createdAt DateTime @default(now())
   home      Home     @relation(fields: [homeId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
@@ -46,6 +46,8 @@ model HouseholdItem {
   id        Int      @id @default(autoincrement())
   name      String
   homeId    Int
+  expenseId Int?
   createdAt DateTime @default(now())
   home      Home     @relation(fields: [homeId], references: [id])
+  expense   Expense?  @relation(fields: [expenseId], references: [id])
 }

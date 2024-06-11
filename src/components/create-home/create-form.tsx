@@ -1,13 +1,6 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Info, RefreshCw } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { generateUsername } from 'unique-username-generator';
-import { z } from 'zod';
-
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,8 +8,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -24,39 +17,50 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Info, RefreshCw } from "lucide-react";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { generateUsername } from "unique-username-generator";
+import { z } from "zod";
 
 const formSchema = z.object({
   code: z.string().regex(/^(?=.{6,16}$)(?!.*_{2})[a-zA-Z0-9_]+$/, {
     message:
-      'Your home code can only contain alphanumeric characters and underscores and must be between 6 and 16 characters',
+      "Your home code can only contain alphanumeric characters and underscores and must be between 6 and 16 characters",
   }),
   name: z.string().min(3, {
-    message: 'Your home name must be at least 3 characters.',
+    message: "Your home name must be at least 3 characters.",
   }),
   resetDayOfMonth: z.string(),
 });
 
-export default function CreateHome({ onFinish }) {
+export default function CreateHome({
+  onFinish,
+}: {
+  onFinish: SubmitHandler<z.infer<typeof formSchema>>;
+}) {
   const [spin, setSpin] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: { resetDayOfMonth: '1' },
+    defaultValues: { resetDayOfMonth: "1" },
     resolver: zodResolver(formSchema),
   });
+
+  const { control, handleSubmit, setValue, trigger } = form;
 
   const handleRandomCode = () => {
     setSpin(true);
     setTimeout(() => {
-      form.setValue('code', generateUsername('_', 2, 10));
-      form.trigger('code');
-      setSpin(false);
+      setValue("code", generateUsername("_", 2, 10));
+      trigger("code").then(() => setSpin(false));
     }, 500);
   };
 
@@ -64,12 +68,9 @@ export default function CreateHome({ onFinish }) {
     <div className="mx-auto h-full max-w-xl content-center">
       <h1 className="mb-4 font-bold">Create a new Home</h1>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onFinish)}
-          className="flex flex-col gap-5"
-        >
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit(onFinish)}>
           <FormField
-            control={form.control}
+            control={control}
             name="name"
             render={({ field }) => (
               <FormItem>
@@ -82,7 +83,7 @@ export default function CreateHome({ onFinish }) {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="code"
             render={({ field }) => (
               <FormItem>
@@ -91,7 +92,7 @@ export default function CreateHome({ onFinish }) {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Info size={20} className="cursor-pointer" />
+                        <Info className="cursor-pointer" size={20} />
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Your home code must be unique</p>
@@ -103,9 +104,9 @@ export default function CreateHome({ onFinish }) {
                   <div className="relative">
                     <Input {...field} />
                     <RefreshCw
-                      size={20}
+                      className={`absolute right-2 top-2.5 cursor-pointer ${spin ? "animate-spin" : null}`}
                       onClick={spin ? () => null : handleRandomCode}
-                      className={`absolute right-2 top-2.5 cursor-pointer ${spin ? 'animate-spin' : null}`}
+                      size={20}
                     />
                   </div>
                 </FormControl>
@@ -114,16 +115,16 @@ export default function CreateHome({ onFinish }) {
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="resetDayOfMonth"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Expense reset date</FormLabel>
                 <FormControl>
                   <Select
-                    value={field.value}
                     name={field.name}
                     onValueChange={field.onChange}
+                    value={field.value}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a fruit" />
