@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { App, ConfigProvider, theme } from 'antd';
-import React from 'react';
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { App, ConfigProvider, theme } from "antd";
+import React from "react";
 
 export default function Wrapper({
   children,
@@ -13,7 +13,7 @@ export default function Wrapper({
         algorithm: theme.darkAlgorithm,
         cssVar: true,
         token: {
-          fontFamily: 'initial',
+          fontFamily: "initial",
         },
       }}
     >

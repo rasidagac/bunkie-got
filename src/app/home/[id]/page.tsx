@@ -8,9 +8,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import { CircleFadingPlus, Eye } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
-
-import Loading from "./loading";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const householdItems = await getHouseholdItemsByHomeId(Number(params.id));

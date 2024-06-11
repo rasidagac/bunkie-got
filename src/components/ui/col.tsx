@@ -1,28 +1,28 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 interface ColProps {
-  span?: number;
-  xs?: number;
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
-  className?: string;
   children?: ReactNode;
+  className?: string;
+  lg?: number;
+  md?: number;
+  sm?: number;
+  span?: number;
+  xl?: number;
+  xs?: number;
 }
 
 const Col: React.FC<ColProps> = ({
-  span,
-  xs,
-  sm,
-  md,
-  lg,
-  xl,
-  className = '',
   children,
+  className = "",
+  lg,
+  md,
+  sm,
+  span,
+  xl,
+  xs,
 }) => {
   const getWidthClass = (size?: number) =>
-    size ? `w-${(size / 12) * 100}%` : '';
+    size ? `w-${(size / 12) * 100}%` : "";
 
   const colClass = `
     px-${span ? span / 2 : 2}

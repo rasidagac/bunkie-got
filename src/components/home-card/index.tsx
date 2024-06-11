@@ -2,13 +2,7 @@ import { getTotalExpensesAmountByHomeId } from "@/app/actions/expense";
 import { getHomeById } from "@/app/actions/home";
 import { getUsersByHomeId } from "@/app/actions/user";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Collapsible,
   CollapsibleContent,
