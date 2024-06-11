@@ -2,16 +2,12 @@ import JoinHome from "@/components/join-home";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { currentUser } from "@clerk/nextjs/server";
 import { Home as HomeIcon, Merge } from "lucide-react";
 import Link from "next/link";
