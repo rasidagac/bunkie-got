@@ -11,46 +11,60 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  code: z.number().positive(),
+  code: z.string().trim(),
 });
 
 export default function JoinHome() {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
+    defaultValues: { code: "" },
     resolver: zodResolver(formSchema),
   });
 
-  const { control } = form;
+  const { control, handleSubmit } = form;
+
+  const onSubmit = handleSubmit(async ({ code }) =>
+    joinHome({ code }).catch((reason: Error) =>
+      toast({ description: reason.message, variant: "destructive" }),
+    ),
+  );
 
   return (
-    <div className="mx-auto h-full max-w-xl content-center">
-      <h1 className="mb-4 font-bold">Join Home</h1>
+    <div className="p-6">
       <Form {...form}>
-        <form action={joinHome} className="flex flex-col gap-5">
+        <form className="flex flex-col gap-5" onSubmit={onSubmit}>
           <FormField
             control={control}
             name="code"
-            render={({ field }) => (
+            render={({ field, formState: { isSubmitting } }) => (
               <FormItem>
                 <FormLabel>Home Code</FormLabel>
                 <FormControl>
-                  <Input {...field} type="text" />
+                  <div className="space-y-3">
+                    <Input {...field} type="text" />
+                    <Button
+                      className="w-full"
+                      disabled={isSubmitting}
+                      type="submit"
+                    >
+                      {isSubmitting && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      Join
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button disabled={form.formState.isSubmitting} type="submit">
-            {form.formState.isSubmitting && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Create
-          </Button>
         </form>
       </Form>
     </div>

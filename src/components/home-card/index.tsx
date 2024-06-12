@@ -30,7 +30,7 @@ export async function HomeCard({ homeId }: { homeId: string }) {
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <HomeCode code={home.code} />
         </div>
-        <div>{`Total Expense: ${totalAmount._sum.amount}`}</div>
+        <div>{`Total Expense: ${totalAmount}`}</div>
       </CardHeader>
       <CardContent>
         <Collapsible className="space-y-2">

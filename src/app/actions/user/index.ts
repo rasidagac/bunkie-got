@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { User } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 export async function getUsersByHomeId(homeId: number) {
   return prisma.user.findMany({ where: { homeId } });
@@ -23,20 +24,20 @@ export async function createUser({ createdAt, email, id, name }: User) {
   });
 }
 
-export async function joinHome(formData: FormData) {
-  const homeId = await prisma.home.findUnique({
-    select: { id: true },
-    where: { code: formData.get("code") as string },
-  });
-
+export async function joinHome({ code }: { code: string }) {
   const user = await currentUser();
 
-  if (!homeId) {
-    return Promise.reject(new Error("Home does not exist"));
-  }
+  const homeId = await prisma.home.findUnique({
+    select: { id: true },
+    where: { code },
+  });
 
-  return prisma.user.update({
+  if (!homeId) throw new Error(`Home with id '${code}' not found`);
+
+  await prisma.user.update({
     data: { homeId: homeId.id },
     where: { id: user?.id },
   });
+
+  redirect(`/home/${homeId.id}`);
 }

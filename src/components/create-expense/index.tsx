@@ -1,7 +1,6 @@
-"use client";
-
 import type { SubmitHandler } from "react-hook-form";
 
+import { createExpense } from "@/app/actions/expense";
 import FileUpload from "@/components/file-upload";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -26,11 +26,8 @@ const formSchema = z.object({
 
 export type CreateExpenseArgs = z.infer<typeof formSchema>;
 
-export default function CreateExpense({
-  onSubmit,
-}: {
-  onSubmit: SubmitHandler<CreateExpenseArgs>;
-}) {
+export default function CreateExpense({ params }: { params?: { id: string } }) {
+  const { user } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: { amount: 1, date: "" },
     resolver: zodResolver(formSchema),
@@ -38,11 +35,26 @@ export default function CreateExpense({
 
   const { control, handleSubmit } = form;
 
+  const onSubmit: SubmitHandler<CreateExpenseArgs> = async (formData) => {
+    const { amount, date, imageUrl } = formData;
+
+    await createExpense({
+      amount: amount,
+      date: date ? new Date(date) : new Date(),
+      homeId: Number(params?.id),
+      imageUrl,
+      userId: user?.id as string,
+    });
+  };
+
   return (
     <div className="mx-auto h-full max-w-xl content-center">
       <h1 className="mb-4 font-bold">Create an expense</h1>
       <Form {...form}>
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit((formData) => onSubmit(formData))}
+        >
           <FormField
             control={control}
             name="amount"
