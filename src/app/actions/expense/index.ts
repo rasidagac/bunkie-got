@@ -17,12 +17,14 @@ export async function getExpensesByHomeId(homeId: number) {
 }
 
 export async function getTotalExpensesAmountByHomeId(homeId: number) {
-  return prisma.expense.aggregate({
-    _sum: {
-      amount: true,
-    },
-    where: { homeId },
-  });
+  return prisma.expense
+    .aggregate({
+      _sum: {
+        amount: true,
+      },
+      where: { homeId },
+    })
+    .then((value) => value._sum.amount || 0);
 }
 
 export async function createExpense({

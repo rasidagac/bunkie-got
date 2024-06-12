@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
@@ -39,6 +40,7 @@ export default function RootLayout({
               {drawer}
               {children}
             </main>
+            <Toaster />
             <footer className="border-t bg-background px-12 py-6">
               <div className="flex w-full items-center justify-between">
                 Footer
