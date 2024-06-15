@@ -6,11 +6,25 @@ import { User } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 export async function getUsersByHomeId(homeId: number) {
-  return prisma.user.findMany({ where: { homeId } });
+  return prisma.user.findMany({
+    cacheStrategy: { swr: 60, ttl: 60 },
+    include: {
+      expenses: {
+        select: {
+          amount: true,
+        },
+      },
+    },
+    where: { homeId },
+  });
 }
 
 export async function getUserByHomeId(id: string, homeId: number) {
   return prisma.user.findUnique({ where: { homeId, id } });
+}
+
+export async function getUserById(id: string) {
+  return prisma.user.findUnique({ where: { id } });
 }
 
 export async function createUser({ createdAt, email, id, name }: User) {
@@ -32,7 +46,7 @@ export async function joinHome({ code }: { code: string }) {
     where: { code },
   });
 
-  if (!homeId) throw new Error(`Home with id '${code}' not found`);
+  if (!homeId) throw new Error(`Home with code: '${code}' not found`);
 
   await prisma.user.update({
     data: { homeId: homeId.id },

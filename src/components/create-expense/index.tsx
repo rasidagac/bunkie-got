@@ -12,9 +12,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -26,8 +28,10 @@ const formSchema = z.object({
 
 export type CreateExpenseArgs = z.infer<typeof formSchema>;
 
-export default function CreateExpense({ params }: { params?: { id: string } }) {
+export default function CreateExpense() {
   const { user } = useUser();
+  const params = useParams<{ id: string }>();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: { amount: 1, date: "" },
     resolver: zodResolver(formSchema),
@@ -44,7 +48,7 @@ export default function CreateExpense({ params }: { params?: { id: string } }) {
       homeId: Number(params?.id),
       imageUrl,
       userId: user?.id as string,
-    });
+    }).then(() => toast({ description: "Successfully created" }));
   };
 
   return (

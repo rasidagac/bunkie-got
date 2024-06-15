@@ -21,6 +21,9 @@ export async function HomeCard({ homeId }: { homeId: string }) {
     return <div>Home not found</div>;
   }
 
+  const userBalance = (user: { expenses: any[] }) =>
+    user.expenses?.reduce((acc, curr) => acc + curr.amount, 0) || 0;
+
   return (
     <Card>
       <CardHeader>
@@ -48,10 +51,11 @@ export async function HomeCard({ homeId }: { homeId: string }) {
           <CollapsibleContent className="space-y-2">
             {users.map((user) => (
               <div
-                className="rounded-md border px-4 py-3 font-mono text-sm"
+                className="flex justify-between rounded-md border px-4 py-3 font-mono text-sm"
                 key={user.id}
               >
-                {user.name}
+                <div>{user.name}</div>
+                <div>{userBalance(user) - totalAmount / users.length}</div>
               </div>
             ))}
           </CollapsibleContent>

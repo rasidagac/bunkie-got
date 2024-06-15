@@ -2,9 +2,11 @@
 
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function getExpensesByHomeId(homeId: number) {
   return prisma.expense.findMany({
+    cacheStrategy: { swr: 60, ttl: 60 },
     include: {
       user: {
         select: {
@@ -34,7 +36,7 @@ export async function createExpense({
   imageUrl,
   userId,
 }: Prisma.ExpenseCreateManyInput) {
-  return prisma.expense.create({
+  const expense = await prisma.expense.create({
     data: {
       amount,
       date,
@@ -43,4 +45,8 @@ export async function createExpense({
       userId,
     },
   });
+
+  revalidatePath("/home/[id]");
+
+  return expense;
 }

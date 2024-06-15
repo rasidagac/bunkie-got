@@ -1,3 +1,4 @@
+import { getUserById } from "@/app/actions/user";
 import JoinHome from "@/components/join-home";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,9 +12,16 @@ import {
 import { currentUser } from "@clerk/nextjs/server";
 import { Home as HomeIcon, Merge } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await currentUser();
+
+  if (!user) redirect("/sign-in");
+
+  const userHomeId = await getUserById(user.id).then((user) => user?.homeId);
+
+  if (userHomeId) redirect(`/home/${userHomeId}`);
 
   return (
     <div className="container mx-auto h-full content-center text-center">
