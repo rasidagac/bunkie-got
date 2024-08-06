@@ -1,7 +1,8 @@
 import { getTotalExpensesAmountByHomeId } from "@/app/actions/expense";
 import { getHomeById } from "@/app/actions/home";
 import { getUsersByHomeId } from "@/app/actions/user";
-import { Liabilities } from "@/components/liabilities";
+import Liabilities from "@/components/liabilities";
+import UserList from "@/components/liabilities/user-list";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home as HomeIcon } from "lucide-react";
 
@@ -28,7 +29,9 @@ export async function HomeCard({ homeId }: { homeId: string }) {
         <div>{`Total Expense: ${totalAmount}`}</div>
       </CardHeader>
       <CardContent>
-        <Liabilities totalAmount={totalAmount} users={users} />
+        <Liabilities>
+          <UserList totalAmount={totalAmount} users={users} />
+        </Liabilities>
       </CardContent>
     </Card>
   );
