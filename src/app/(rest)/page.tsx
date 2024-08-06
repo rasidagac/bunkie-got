@@ -45,7 +45,7 @@ export default async function Home() {
           </DrawerContent>
         </Drawer>
         <Button className="w-full" size="lg">
-          <Link className="flex items-center gap-1" href="./home/create">
+          <Link className="flex items-center gap-1" href="homereate">
             <h4>Create a new Home</h4>
             <HomeIcon className="mr-2 h-4 w-4" />
           </Link>

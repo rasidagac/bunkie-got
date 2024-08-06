@@ -18,7 +18,9 @@ export async function getExpensesByHomeId(homeId: number) {
   });
 }
 
-export async function getTotalExpensesAmountByHomeId(homeId: number) {
+export async function getTotalExpensesAmountByHomeId(
+  homeId: number,
+): Promise<number> {
   return prisma.expense
     .aggregate({
       _sum: {
@@ -46,7 +48,7 @@ export async function createExpense({
     },
   });
 
-  revalidatePath("/home/[id]");
+  revalidatePath(`home/${homeId}`);
 
   return expense;
 }

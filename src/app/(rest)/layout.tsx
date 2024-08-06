@@ -6,7 +6,7 @@ import { Poppins } from "next/font/google";
 import Link from "next/link";
 import React from "react";
 
-import "./globals.css";
+import "../globals.css";
 
 const poppins = Poppins({
   subsets: ["latin-ext"],
@@ -27,13 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ClerkProvider>
+      <ClerkProvider afterSignOutUrl="/sign-in">
         <body className={poppins.className}>
           <div className="flex min-h-lvh flex-col justify-between">
             <header className="border-b bg-background px-12 py-6">
               <div className="flex w-full items-center justify-between">
-                <Link href="/">BunkieGot</Link>
-                <UserButton afterSignOutUrl="/sign-in" showName />
+                <Link href="/public">BunkieGot</Link>
+                <UserButton showName />
               </div>
             </header>
             <main className="container mx-auto h-full py-6">
@@ -41,9 +41,12 @@ export default function RootLayout({
               {children}
             </main>
             <Toaster />
-            <footer className="border-t bg-background px-12 py-6">
+            <footer className="relative flex h-20 w-full items-center justify-between border-t bg-gray-100 px-12">
               <div className="flex w-full items-center justify-between">
-                Footer
+                <div>BunkieGot®</div>
+                <div className="text-sm text-gray-500">
+                  {new Date().getFullYear()}. All rights reserved.
+                </div>
               </div>
             </footer>
           </div>
