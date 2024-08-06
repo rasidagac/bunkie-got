@@ -15,24 +15,11 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { useMediaQuery } from "@/hooks";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useDialogAsRoute, useMediaQuery } from "@/hooks";
 
 export default function Page() {
-  const [open, setOpen] = useState(true);
-  const router = useRouter();
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    if (!open) {
-      timeout = setTimeout(() => router.back(), 150);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [open, router]);
+  const { open, setOpen } = useDialogAsRoute(150);
 
   if (isDesktop) {
     return (

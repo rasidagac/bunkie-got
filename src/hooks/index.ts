@@ -1,4 +1,4 @@
+import useDialogAsRoute from "./use-dialog-as-route";
 import useMediaQuery from "./use-media-query";
-import useRandomColor from "./use-random-color";
 
-export { useMediaQuery, useRandomColor };
+export { useDialogAsRoute, useMediaQuery };

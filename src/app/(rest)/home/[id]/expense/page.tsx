@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       </CardHeader>
       <Card>
         <CardContent className="pt-6">
-          <ExpenseTable data={expenses} />
+          <ExpenseTable homeId={params.id} />
         </CardContent>
       </Card>
     </>
