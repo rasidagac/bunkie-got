@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+import NextTopLoader from "nextjs-toploader";
 import React from "react";
 
 import "../globals.css";
@@ -32,10 +33,11 @@ export default function RootLayout({
           <div className="flex min-h-lvh flex-col justify-between">
             <header className="border-b bg-background px-12 py-6">
               <div className="flex w-full items-center justify-between">
-                <Link href="/public">BunkieGot</Link>
+                <Link href="/">BunkieGot</Link>
                 <UserButton showName />
               </div>
             </header>
+            <NextTopLoader />
             <main className="container mx-auto h-full py-6">
               {drawer}
               {children}
