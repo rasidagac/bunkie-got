@@ -3,7 +3,10 @@ import ExpensesDrawer from "@/components/expenses-drawer";
 import { SkeletonTable } from "@/components/table-skeleton";
 import { Suspense } from "react";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default async function Page(
+  props: Readonly<{ params: Promise<{ id: string }> }>,
+) {
+  const params = await props.params;
   return (
     <ExpensesDrawer>
       <Suspense fallback={<SkeletonTable rowNumber={4} />}>

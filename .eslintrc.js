@@ -3,8 +3,8 @@ module.exports = {
     "next/core-web-vitals",
     "prettier",
     "plugin:prettier/recommended",
-    "plugin:perfectionist/recommended-alphabetical",
     "plugin:@next/next/recommended",
+    "plugin:perfectionist/recommended-alphabetical-legacy",
   ],
   plugins: ["perfectionist", "unused-imports"],
   rules: {

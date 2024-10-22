@@ -8,7 +8,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(
+  props: Readonly<{ params: Promise<{ id: string }> }>,
+) {
+  const params = await props.params;
   const expenses = await getExpensesByHomeId(Number(params.id));
 
   if (!expenses) {

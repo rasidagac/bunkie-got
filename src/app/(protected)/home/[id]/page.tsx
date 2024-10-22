@@ -1,14 +1,17 @@
-import { getUserByHomeId } from "@/app/actions/user";
 import { HomeCard } from "@/components/home-card";
 import { HouseholdTable } from "@/components/household-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getUserByHomeId } from "@actions/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { BadgePlus, CircleFadingPlus, Eye } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(
+  props: Readonly<{ params: Promise<{ id: string }> }>,
+) {
+  const params = await props.params;
   const currentUserData = await currentUser();
 
   const isHomeBelongsToUser = await getUserByHomeId(

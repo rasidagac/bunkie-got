@@ -1,6 +1,5 @@
-import { getUserById } from "@/app/actions/user";
-import JoinHome from "@/components/join-home";
-import { Button } from "@/components/ui/button";
+import JoinHome from "@components/join-home";
+import { Button } from "@components/ui/button";
 import {
   Drawer,
   DrawerContent,
@@ -8,24 +7,18 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { currentUser } from "@clerk/nextjs/server";
-import { Home as HomeIcon, Merge } from "lucide-react";
+} from "@components/ui/drawer";
+import { HomeIcon, Merge } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const user = await currentUser();
-
-  if (!user) redirect("/sign-in");
-
-  const userHomeId = await getUserById(user.id).then((user) => user?.homeId);
-
-  if (userHomeId) redirect(`/home/${userHomeId}`);
+  const headerList = await headers();
+  const userFullName = headerList.get("user-name");
 
   return (
     <div className="container mx-auto h-full content-center text-center">
-      <h1 className="mb-2">Hi {user?.fullName} welcome to BunkieGot!</h1>
+      <h1 className="mb-2">Hi {userFullName} welcome to BunkieGot!</h1>
       <div className="flex flex-wrap gap-4">
         <Drawer>
           <DrawerTrigger asChild>
@@ -45,7 +38,7 @@ export default async function Home() {
           </DrawerContent>
         </Drawer>
         <Button className="w-full" size="lg">
-          <Link className="flex items-center gap-1" href="homereate">
+          <Link className="flex items-center gap-1" href="/home/create">
             <h4>Create a new Home</h4>
             <HomeIcon className="mr-2 h-4 w-4" />
           </Link>

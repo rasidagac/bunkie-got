@@ -1,6 +1,5 @@
 "use client";
 
-import { uploadImage } from "@/app/actions/common";
 import { Input } from "@/components/ui/input";
 import { toBase64 } from "@/lib/utils";
 import { ChangeEvent, forwardRef, useState } from "react";
@@ -11,17 +10,22 @@ export default forwardRef(function FileUpload(
   props: ControllerRenderProps<FieldValues, string>,
   ref: React.Ref<HTMLInputElement>,
 ) {
-  const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+  const [loading, setLoading] = useState<boolean>(false);
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const { onChange, value, ...field } = props;
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
-    const base64 = (await toBase64(e.target.files?.[0] as Blob)) as string;
+    const base64 = await toBase64(e.target.files?.[0] as Blob);
 
-    uploadImage(base64, e.target.files?.[0].name as string).then((value) => {
-      onChange(value.url);
+    fetch("/api/upload", {
+      body: JSON.stringify({
+        base64,
+        name: e.target.files?.[0].name,
+      }),
+      method: "PUT",
+    }).then((value) => {
       setLoading(false);
+      onChange(value.url);
     });
   };
 

@@ -24,7 +24,10 @@ export async function getUserByHomeId(id: string, homeId: number) {
 }
 
 export async function getUserById(id: string) {
-  return prisma.user.findUnique({ where: { id } });
+  return prisma.user.findUnique({
+    cacheStrategy: { swr: 60, ttl: 60 },
+    where: { id },
+  });
 }
 
 export async function createUser({ createdAt, email, id, name }: User) {
